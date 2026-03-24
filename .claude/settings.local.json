@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(npm install:*)",
-      "Bash(npx shadcn@latest init --defaults -y)"
+      "Bash(npx shadcn@latest init --defaults -y)",
+      "Bash(npx shadcn@latest add input badge card tabs progress --yes)",
+      "Bash(npm run:*)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(xargs grep:*)",
+      "Bash(find E:/users/ulises/desktop/web-audity/node_modules/@base-ui/react -name *.css)",
+      "Bash(cd:*)",
+      "Bash(curl -s http://localhost:3001)",
+      "Bash(curl -s http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__0rfiqwx._.css)",
+      "Bash(npx tsc:*)",
+      "Bash(npx next:*)",
+      "Bash(npx eslint:*)",
+      "Bash(find /e/users/ulises/desktop/web-audity/src -type f \\\\\\(-name *.tsx -o -name *.ts -o -name *.json \\\\\\))",
+      "Bash(node -e \"try { require.resolve\\(''lucide-react''\\); console.log\\(''installed''\\) } catch { console.log\\(''not installed''\\) }\")"
     ]
   }
 }
