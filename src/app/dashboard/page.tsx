@@ -419,16 +419,16 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-8 h-14">
-          <div className="flex items-center gap-3">
-            <LayoutDashboard className="h-5 w-5 text-primary" />
-            <h1 className="text-lg font-bold">Panel de monitoreo</h1>
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <LayoutDashboard className="h-5 w-5 text-primary shrink-0" />
+            <h1 className="text-base sm:text-lg font-bold truncate">Panel de monitoreo</h1>
             {sites.length > 0 && (
-              <Badge variant="outline" className="text-xs font-normal">
+              <Badge variant="outline" className="text-xs font-normal shrink-0 hidden sm:inline-flex">
                 {sites.length} {sites.length === 1 ? "sitio" : "sitios"}
               </Badge>
             )}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {sites.length > 0 && (
               <Button
                 variant="outline"
@@ -442,8 +442,9 @@ export default function DashboardPage() {
               </Button>
             )}
             <Link href="/">
-              <Button variant="outline" size="sm" className="cursor-pointer !border-blue-500/50 hover:!border-blue-500/70">
-                Nueva auditoría
+              <Button variant="outline" size="sm" className="cursor-pointer !border-blue-500/50 hover:!border-blue-500/70 text-xs sm:text-sm">
+                <span className="hidden sm:inline">Nueva auditoría</span>
+                <span className="sm:hidden">Auditar</span>
               </Button>
             </Link>
           </div>
@@ -557,10 +558,10 @@ export default function DashboardPage() {
                           </Button>
                           <Button
                             size="sm"
-                            className="cursor-pointer gap-1 ml-1"
+                            className="cursor-pointer gap-1 ml-1 text-xs sm:text-sm"
                             onClick={() => router.push(`/audit?url=${encodeURIComponent(site.url)}`)}
                           >
-                            Auditar
+                            <span className="hidden sm:inline">Auditar</span>
                             <ArrowRight className="h-3.5 w-3.5" />
                           </Button>
                         </div>

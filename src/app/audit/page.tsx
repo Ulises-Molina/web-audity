@@ -362,7 +362,7 @@ function SeoChecksSection({ checks }: { checks: SeoCheck[] }) {
         {filtered.map((check) => (
           <div
             key={check.id}
-            className={`flex items-start gap-3 rounded-lg border p-3 ${
+            className={`flex items-start gap-2 sm:gap-3 rounded-lg border p-2.5 sm:p-3 ${
               check.passed
                 ? "border-green-500/20 bg-green-500/5"
                 : "border-red-500/20 bg-red-500/5"
@@ -371,13 +371,15 @@ function SeoChecksSection({ checks }: { checks: SeoCheck[] }) {
             <span className={`mt-0.5 shrink-0 text-sm ${check.passed ? "text-green-400" : "text-red-400"}`}>
               {check.passed ? "✓" : "✗"}
             </span>
-            <div className="min-w-0">
-              <p className="text-sm font-medium">{check.title}</p>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-start justify-between gap-2">
+                <p className="text-sm font-medium">{check.title}</p>
+                <Badge variant="outline" className="shrink-0 text-[10px] hidden sm:inline-flex">
+                  {SEO_CATEGORY_LABELS[check.category]}
+                </Badge>
+              </div>
               <p className="text-xs text-muted-foreground mt-0.5">{check.description}</p>
             </div>
-            <Badge variant="outline" className="ml-auto shrink-0 text-[10px]">
-              {SEO_CATEGORY_LABELS[check.category]}
-            </Badge>
           </div>
         ))}
       </div>
@@ -599,9 +601,10 @@ function AuditPageContent() {
       <div className="border-b border-border/50 bg-background/60 backdrop-blur-md">
         <div className="mx-auto max-w-6xl flex items-center justify-center px-4 sm:px-8 h-10">
           <Link href="/dashboard" className="group flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <LayoutDashboard className="h-3.5 w-3.5 text-primary" />
-            <span>Monitoreá tus webs desde un solo lugar</span>
-            <span className="text-primary font-medium group-hover:underline">Crea tu dashboard</span>
+            <LayoutDashboard className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span className="hidden sm:inline">Monitoreá tus webs desde un solo lugar</span>
+            <span className="sm:hidden">Dashboard</span>
+            <span className="text-primary font-medium group-hover:underline shrink-0">Crea tu dashboard</span>
           </Link>
         </div>
       </div>
@@ -609,10 +612,10 @@ function AuditPageContent() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
         <div className="mx-auto max-w-6xl flex items-center justify-between px-4 sm:px-8 h-14">
-          <div className="flex items-center gap-6">
-            <h1 className="text-lg font-bold">Auditoría</h1>
+          <div className="flex items-center gap-3 sm:gap-6 min-w-0">
+            <Link href="/" className="text-lg font-bold shrink-0">Auditoría</Link>
             {result && (
-              <nav className="hidden sm:flex items-center gap-1">
+              <nav className="hidden md:flex items-center gap-1">
                 <a href="#seo" className="text-sm text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-md hover:bg-muted/50">
                   Análisis SEO
                 </a>
@@ -622,12 +625,12 @@ function AuditPageContent() {
               </nav>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {url && (
-              <p className="text-xs text-muted-foreground truncate max-w-[200px] hidden md:block">{url}</p>
+              <p className="text-xs text-muted-foreground truncate max-w-[200px] hidden lg:block">{url}</p>
             )}
             <Link href="/">
-              <Button variant="outline" size="sm" className="cursor-pointer !border-blue-500/50 hover:!border-blue-500/70">Nueva auditoría</Button>
+              <Button variant="outline" size="sm" className="cursor-pointer !border-blue-500/50 hover:!border-blue-500/70 text-xs sm:text-sm">Nueva auditoría</Button>
             </Link>
           </div>
         </div>
@@ -651,7 +654,7 @@ function AuditPageContent() {
         {result && (
           <>
           {/* Fuentes de datos - banner sutil */}
-          <div className="mb-6 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-[11px] text-muted-foreground">
+          <div className="mb-6 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1.5 text-[10px] sm:text-[11px] text-muted-foreground px-2">
             <span>Datos obtenidos desde</span>
             {[
               { name: "Google Lighthouse", desc: "Rendimiento y métricas" },
@@ -679,7 +682,7 @@ function AuditPageContent() {
             {(["mobile", "desktop"] as const).map((device) => (
               <TabsContent key={device} value={device} className="space-y-8">
                 {/* Scores */}
-                <div className="flex justify-center gap-12">
+                <div className="flex justify-center gap-6 sm:gap-12">
                   <ScoreRing
                     score={result[device].scores.performance}
                     label="Rendimiento"
@@ -688,7 +691,7 @@ function AuditPageContent() {
                 </div>
 
                 {/* Métricas + Sidebar */}
-                <div className="flex gap-6 items-start">
+                <div className="flex flex-col lg:flex-row gap-6 items-start">
                   <div className="flex-1 min-w-0 space-y-8">
                     {/* Métricas */}
                     <Card>

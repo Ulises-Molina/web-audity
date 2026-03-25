@@ -38,10 +38,11 @@ export default function Home() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/60 backdrop-blur-md">
         <div className="mx-auto max-w-6xl flex items-center justify-center px-4 sm:px-8 h-12">
-          <Link href="/dashboard" className="group flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <LayoutDashboard className="h-4 w-4 text-primary" />
-            <span>Monitoreá tus webs desde un solo lugar</span>
-            <span className="text-xs text-primary font-medium group-hover:underline">Crea tu dashboard</span>
+          <Link href="/dashboard" className="group flex items-center gap-2 text-xs sm:text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <LayoutDashboard className="h-4 w-4 text-primary shrink-0" />
+            <span className="hidden sm:inline">Monitoreá tus webs desde un solo lugar</span>
+            <span className="sm:hidden">Dashboard de monitoreo</span>
+            <span className="text-xs text-primary font-medium group-hover:underline shrink-0">Crea tu dashboard</span>
           </Link>
         </div>
       </header>
