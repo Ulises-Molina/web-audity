@@ -8,6 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import Link from "next/link";
+import {
+  fetchPageSpeed,
+  extractScores,
+  extractPerformanceMetrics,
+  extractCoreWebVitals,
+  extractRecommendations,
+} from "@/lib/pagespeed";
 
 interface CWVField {
   percentile: number;
@@ -510,19 +517,47 @@ function AuditPageContent() {
     }
 
     async function runAudit() {
+      const apiKey = process.env.NEXT_PUBLIC_PAGESPEED_API_KEY || "";
+      if (!apiKey) {
+        setError("API key de PageSpeed no configurada.");
+        setLoading(false);
+        return;
+      }
+
       try {
-        const res = await fetch("/api/audit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url }),
+        // Run PageSpeed (browser) + SEO/Tech (server) in parallel
+        const [mobileResult, desktopResult, seoTechRes] = await Promise.all([
+          fetchPageSpeed(url!, "mobile", apiKey),
+          fetchPageSpeed(url!, "desktop", apiKey),
+          fetch("/api/seo-tech", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
+          }).then((r) => r.json()),
+        ]);
+
+        const seo = seoTechRes.seo ?? { score: 0, checks: [] };
+        const technologies = seoTechRes.technologies ?? [];
+        const normalizedUrl = seoTechRes.url ?? url!;
+
+        const buildDevice = (result: Awaited<ReturnType<typeof fetchPageSpeed>>) => ({
+          scores: {
+            performance: extractScores(result).performance,
+            seo: seo.score,
+          },
+          performanceMetrics: extractPerformanceMetrics(result),
+          coreWebVitals: extractCoreWebVitals(result),
+          recommendations: extractRecommendations(result),
         });
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          setError(data.error || "Error al auditar el sitio.");
-          return;
-        }
+        const data: AuditResult = {
+          url: normalizedUrl,
+          timestamp: new Date().toISOString(),
+          technologies,
+          seo,
+          mobile: buildDevice(mobileResult),
+          desktop: buildDevice(desktopResult),
+        };
 
         setResult(data);
 
@@ -546,8 +581,10 @@ function AuditPageContent() {
         } catch {
           // ignore localStorage errors
         }
-      } catch {
-        setError("Error de conexión. Intentá de nuevo.");
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Error de conexión. Intentá de nuevo.",
+        );
       } finally {
         setLoading(false);
       }
